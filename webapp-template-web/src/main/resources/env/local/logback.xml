@@ -1,0 +1,14 @@
+<configuration>
+    <!-- 日志格式 -->
+    <property name="log.pattern" value="%d - %p - %c [%M:%L][%t] - %m%n"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

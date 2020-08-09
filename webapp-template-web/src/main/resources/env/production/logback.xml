@@ -1,0 +1,7 @@
+<configuration>
+    <!-- 日志格式 -->
+    <property name="log.pattern" value="%d - %p - %c [%M:%L][%t] - %m%n"/>
+
+    <root level="INFO">
+    </root>
+</configuration>

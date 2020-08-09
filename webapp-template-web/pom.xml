@@ -37,4 +37,59 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <finalName>webapp-template</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <addResources>true</addResources>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <filters>
+            <filter>src/main/resources/env/local/db.properties</filter>
+        </filters>
+        <resources>
+            <!-- 普通资源文件 -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>*.*</include>
+                    <include>spring/*</include>
+                </includes>
+            </resource>
+            <!-- 区分环境的文件 -->
+            <resource>
+                <directory>src/main/resources/env/${env}</directory>
+            </resource>
+            <!-- 前端编译后的文件 -->
+            <resource>
+                <directory>src/main/resources/webclient/build</directory>
+                <targetPath>webclient</targetPath>
+            </resource>
+        </resources>
+    </build>
+
+    <!-- 各环境profile配置 -->
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>local</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <env>production</env>
+            </properties>
+        </profile>
+    </profiles>
 </project>
