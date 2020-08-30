@@ -31,6 +31,12 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>cn.junwork</groupId>
+                <artifactId>webapp-template-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.powermock</groupId>
                 <artifactId>powermock-module-junit4</artifactId>
                 <version>${powermock.version}</version>
