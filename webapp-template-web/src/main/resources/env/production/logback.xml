@@ -1,9 +1,69 @@
 <configuration>
+    <!-- 日志打印级别 -->
+    <property name="log.level" value="INFO"/>
     <!-- 日志格式 -->
     <property name="log.pattern" value="%d - %p - %C [%M:%L][%t] - %m%n"/>
+     <!-- 文件存放目录 -->
+    <property name="file.dir" value="./logs"/>
+    <!-- 单文件大小限制 -->
+    <property name="file.size.max" value="100MB"/>
 
+    <!-- app.log -->
+    <appender name="appAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 错误日志过滤掉，单独存放 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+        <file>${file.dir}/app.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${file.dir}/app.log-%d{yyyy-MM-dd}.%i</fileNamePattern>
+            <!-- each file should be at most 100MB, keep 60 days worth of history, but at most 20GB -->
+            <maxFileSize>${file.size.max}</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+    <appender name="asyncAppAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="appAppender"/>
+        <queueSize>1024</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <includeCallerData>true</includeCallerData>
+    </appender>
 
+    <!-- error.log -->
+    <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 只要错误日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${file.dir}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${file.dir}/error.log-%d{yyyy-MM-dd}.%i</fileNamePattern>
+            <!-- each file should be at most 100MB, keep 60 days worth of history, but at most 20GB -->
+            <maxFileSize>${file.size.max}</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+    <appender name="asyncErrorAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="errorAppender"/>
+        <queueSize>1024</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <includeCallerData>true</includeCallerData>
+    </appender>
 
-    <root level="INFO">
+    <root level="${log.level}">
+        <appender-ref ref="asyncAppAppender"/>
+        <appender-ref ref="asyncErrorAppender"/>
     </root>
 </configuration>

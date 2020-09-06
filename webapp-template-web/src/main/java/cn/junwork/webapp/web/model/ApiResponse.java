@@ -38,12 +38,16 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
+    public static <T> ApiResponse<T> newSuccess() {
+        return newSuccess(null);
+    }
+
     public static <T> ApiResponse<T> newSuccess(T data) {
         return new ApiResponse<>(CodeEnum.SUCCESS, null, data);
     }
 
-    public static ApiResponse<Void> newSuccess() {
-        return newSuccess(null);
+    public static ApiResponse<Void> newFailed(String message) {
+        return new ApiResponse<>(CodeEnum.FAILED, message, null);
     }
 
     public static ApiResponse<Void> newSystemError() {
@@ -59,11 +63,15 @@ public class ApiResponse<T> {
         /**
          * 请求失败
          */
-        FAILED(-1, "请求失败"),
+        LOGIN_REQUIRED(-1, "需要登录"),
+        /**
+         * 请求失败
+         */
+        FAILED(-2, "请求失败"),
         /**
          * 服务器内部错误
          */
-        SYSTEM_ERROR(-2, "服务器内部错误")
+        SYSTEM_ERROR(-3, "服务器内部错误")
         ;
 
         private final int code;

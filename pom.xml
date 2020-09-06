@@ -80,4 +80,22 @@
         </plugins>
     </build>
 
+    <!-- 各环境profile配置 -->
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>local</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <env>production</env>
+            </properties>
+        </profile>
+    </profiles>
 </project>
