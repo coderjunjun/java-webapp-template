@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.junwork.webapp.service.exception.BusinessException;
 import cn.junwork.webapp.web.model.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,5 +24,10 @@ public abstract class BaseApiController {
     public Object handleException(HttpServletRequest request, Throwable e) {
         webLog.error("API请求异常, url = {}", request.getRequestURI(), e);
         return ApiResponse.newSystemError();
+    }
+
+    @ExceptionHandler({BusinessException.class})
+    public Object handleException(BusinessException e) {
+        return ApiResponse.newFailed(e.getMessage());
     }
 }

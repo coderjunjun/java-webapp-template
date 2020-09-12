@@ -61,9 +61,6 @@
             </plugin>
         </plugins>
 
-        <filters>
-            <filter>src/main/resources/env/local/db.properties</filter>
-        </filters>
         <resources>
             <!-- 普通资源文件 -->
             <resource>
