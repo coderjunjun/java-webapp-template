@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="webapp-template" basedir="." default="buildProject">
+
+    <!-- 环境profile -->
+    <property name="env.profile" value="dev"/>
+    <!-- 要打包的目标模块 -->
+    <property name="target.module" value="webapp-template-web"/>
+    <!-- 前端代码目录 -->
+    <property name="webclient.dir" value="${target.module}/src/main/webclient"/>
+
+    <target name="buildProject" description="Build project"
+            depends="buildBackEnd">
+        <!-- 把jar包拷出来 -->
+        <copy file="${target.module}/target/webapp-template.jar" tofile="./app.jar"/>
+    </target>
+
+    <target name="clean" description="Delete all generated files">
+        <exec dir="." executable="mvn" failonerror="true">
+            <arg line="clean"/>
+        </exec>
+        <delete file="./app.jar"/>
+    </target>
+
+    <target name="buildFrontEnd" description="Build front-end code">
+        <exec dir="${webclient.dir}" executable="npm" failonerror="true">
+            <arg line="install"/>
+        </exec>
+        <exec dir="${webclient.dir}" executable="npm" failonerror="true">
+            <arg line="run build"/>
+        </exec>
+    </target>
+
+    <target name="buildBackEnd" description="Build back-end code">
+        <exec dir="." executable="mvn" failonerror="true">
+            <arg value="install" />
+            <arg value="–P${env.profile}" />
+        </exec>
+    </target>
+</project>
